@@ -44,7 +44,7 @@ def naive_get_index(reports=[]):
     return index
 
 
-#todo: solution using stack (o(n))
+#solution using stack (o(n))
 #Algorithm
 def get_index_using_stack(reports=[]):
     index=[0]

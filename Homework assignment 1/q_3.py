@@ -8,57 +8,54 @@ import time
 #Path for data
 path="data3.xlsx"
 
-#Implement Stack class
-class Hash_Table:
-     def __init__(self,max_size):
-         self.max_size= max_size
-         self.items = []
-
-     def empty(self):
-         return self.items == []
-
-     def push(self, item):
-        if len(self.items)<self.max_size:
-            self.items.append(item)
-        else:
-            return "Queue is full"
-
-     def pop(self):
-         return self.items.pop()
-
-     def top(self):
-         return self.items[len(self.items)-1]
-
-#Naive solution (o(n^2))
-#Algorithm:
-def naive_get_index(reports=[]):
-    index=[0]
-    for week in range(1,len(reports)):
-        curr_index=0
-        for week_step in reversed(range(week)):
-            if reports[week] > reports[week_step]:
-                curr_index+=1
-            else:
-                break
-        index.append(curr_index)
-    return index
+#Implement HashTable class
+class HashTable:
+    def __init__(self, size=int , hash_function_method=str, collision_handling=str,m=int,A=float):
+        self.hash_function_method=hash_function_method
+        self.collision_handling=collision_handling
+        self.size = size
+        self.keys =[[] for _ in range(size)]
+        self.data = [[] for _ in range(size)]
+        self.m=m
+        self.A=A
 
 
-#todo: solution using stack (o(n))
-#Algorithm
-def get_index_using_stack(reports=[]):
-    index=[0]
-    stack=Stack(1000)
-    stack.push(0)
-    for week in range(1,len(reports)):
-        while stack.empty()==False and reports[week] > reports[stack.top()]:
-            stack.pop()
-        if stack.empty():
-            index.append(week)
-        else:
-            index.append(week-stack.top()-1)
-        stack.push(week)
-    return index
+    def hash_function(self,key):
+        if self.hash_function_method=="mod":
+            return key%self.m
+        elif self.hash_function_method=="multiplication":
+            return self.m*int(key*self.A-int(key*self.A))
+
+    def member(self,key):
+        #todo
+
+    def insert(self,key=int,value=str):
+        counter=0
+        palce= self.hash_function(key)
+        if self.keys[palce]==[]:
+            self.keys[palce]=[key]
+            self.data[palce]=[data]
+            counter+=1
+            return counter
+        elif self.keys[palce]==[key]:
+            self.data[palce]=[data]
+            counter+=1
+            return counter
+        elif self.collision_handling=="Chain":
+            if len(self.keys[palce])>1:
+                for i in range(len(self.keys[palce])):
+                    counter+=1
+                    if self.keys[palce][i]==key:
+                        self.data[palce][i]=value
+                        return counter
+                self.keys[palce].append(key)
+                self.data[palce].append(value)
+                return counter
+        elif self.collision_handling==
+
+
+    def delete(self,key=int):
+        #todo
 
 #data handling data = pd.ExcelFile(path)
 data = pd.ExcelFile(path)
