@@ -3,7 +3,6 @@
 
 #Imports
 import pandas as pd
-import time
 
 #Path for data
 path="data3.xlsx"
@@ -22,18 +21,17 @@ class HashTable:
         self.A_2=A_2
         self.num_keys=0
 
-
     def hash_function(self,key):
         if self.hash_function_method=="mod":
             return key%self.m
         elif self.hash_function_method=="multiplication":
-            return self.m*int(key*self.A-int(key*self.A))
+            return int(self.m*(key*self.A-int(key*self.A)))
 
     def hash_function_2(self,key):
         if self.hash_function_method=="mod":
-            return key%self.m_2
+            return (self.m_2-key%self.m_2)
         elif self.hash_function_method=="multiplication":
-            return self.m_2*int(key*self.A_2-int(key*self.A_2))
+            return int(self.m_2*(key*self.A_2-int(key*self.A_2)))
 
 
     def insert(self,key=int,value=str):
@@ -51,7 +49,7 @@ class HashTable:
             return counter
 
         elif self.collision_handling=="Chain":
-            if len(self.keys[place])>1:
+            if len(self.keys[place])>=1:
                 counter+=1
                 for i in range(1,len(self.keys[place])):
                     counter+=1
@@ -86,7 +84,7 @@ class HashTable:
             counter+=1
             for i in range(1,self.size):
                 counter+=1
-                new_place=self.hash_function(key)+i*self.hash_function_2(key)
+                new_place=self.hash_function(key+i*self.hash_function_2(key))
                 if self.keys[new_place] == [key]:
                     self.data[new_place] = [value]
                     return counter
@@ -95,9 +93,6 @@ class HashTable:
                     self.data[new_place]=[value]
                     self.num_keys+=1
                     return counter
-
-
-
 
     def delete(self,key=int):
         counter = 0
@@ -108,13 +103,12 @@ class HashTable:
             counter += 1
             self.num_keys -= 1
             return counter
-        #########################################del when is empty
 
         elif self.collision_handling == "Chain":
             if self.keys[place] == []:
                 counter += 1
-                return "Data is not in Hash Table"
-            if len(self.keys[place]) > 1:
+                return "Data is not in Hash Table",counter
+            if len(self.keys[place]) >= 1:
                 counter+=1
                 for i in range(1,len(self.keys[place])):
                     counter += 1
@@ -123,7 +117,7 @@ class HashTable:
                         del self.data[place][i]
                         self.num_keys -= 1
                         return counter
-                return "Data is not in Hash Table"
+                return "Data is not in Hash Table",counter
 
         elif self.collision_handling == "OA_Quadratic_Probing":
             counter+=1
@@ -135,7 +129,7 @@ class HashTable:
                     del self.data[new_place]
                     self.num_keys -= 1
                     return counter
-            return "Data is not in Hash Table"
+            return "Data is not in Hash Table",counter
 
         elif self.collision_handling == "OA_Double_Hashing":
             counter+=1
@@ -147,24 +141,79 @@ class HashTable:
                     del self.data[new_place]
                     self.num_keys -= 1
                     return counter
-            return "Data is not in Hash Table"
+            return "Data is not in Hash Table"  ,counter
 
-    def member(self, key):
-        # todo
+    def member(self, key=int):
+        counter = 0
+        place = self.hash_function(key)
+        if self.keys[place] == [key]:
+            counter += 1
+            return True, counter
+
+        elif self.collision_handling == "Chain":
+            if self.keys[place] == []:
+                counter += 1
+                return False, counter
+            if len(self.keys[place]) >= 1:
+                counter+=1
+                for i in range(1,len(self.keys[place])):
+                    counter += 1
+                    if self.keys[place][i] == key:
+                        return True,counter
+                return False,counter
+
+        elif self.collision_handling == "OA_Quadratic_Probing":
+            counter+=1
+            for i in range(1, self.size):
+                counter += 1
+                new_place = self.hash_function(place + i * i)
+                if self.keys[new_place] == [key]:
+                    return True,counter
+            return False,counter
+
+        elif self.collision_handling == "OA_Double_Hashing":
+            counter+=1
+            for i in range(1, self.size):
+                counter += 1
+                new_place = self.hash_function(key) + i * self.hash_function_2(key)
+                if self.keys[new_place] == [key]:
+                    return True,counter
+            return False,counter
+
 
 #data handling data = pd.ExcelFile(path)
 data = pd.ExcelFile(path)
-df = data.parse("Sheet1")
-case=df['Azorei Hen'].tolist()
+df_1 = data.parse("Sheet1")
+keys_1=df_1['ID'].tolist()
+data_1=df_1['Name'].tolist()
 
-#Solving with Naive algorithm:
-start_time = time.clock()
-a= naive_get_index(case)
-print time.clock() - start_time, "seconds"
+df_2 = data.parse("Sheet2")
+keys_2=df_2['ID'].tolist()
+data_2=df_2['Name'].tolist()
 
-#todo: solver using queue
-start_time = time.clock()
-print max(get_index_using_stack(case))
-print time.clock() - start_time, "seconds"
+df_3 = data.parse("Sheet3")
+keys_3=df_3['ID'].tolist()
+data_3=df_3['Name'].tolist()
+
+datas_and_keys=[(data_1,keys_1),(data_2,keys_2),(data_3,keys_3)]
+
+for data,keys in datas_and_keys:
+    print "***"
+    Hash_Table_1=HashTable(149,"mod","Chain",149,0,0,0)
+    Hash_Table_2=HashTable(149,"mod","OA_Quadratic_Probing",149,0,0,0)
+    Hash_Table_3=HashTable(149,"mod","OA_Double_Hashing",149,0,97,0)
+    Hash_Table_4=HashTable(149,"multiplication","Chain",149,0.589,0,0)
+    Hash_Table_5=HashTable(149,"multiplication","OA_Quadratic_Probing",149,0.589,0,0)
+    Hash_Table_6=HashTable(149,"multiplication","OA_Double_Hashing",149,0.589,97,0.309)
+    Hash_Tables=[Hash_Table_1,Hash_Table_2,Hash_Table_3,Hash_Table_4,Hash_Table_5,Hash_Table_6]
+    for Hash_Table in Hash_Tables:
+        count_in=0
+        count_is=0
+        for i in range(len(keys_1)):
+            moves=Hash_Table.insert(int(keys[i]),value=data[i])
+            count_in+=moves
+        print count_in
 
 
+
+#Todo: raiz error if inpuot parameters are not defined
