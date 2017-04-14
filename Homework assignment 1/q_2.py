@@ -84,5 +84,3 @@ for neighborhood in neighborhoods:      #Go over every neighborhood and add solu
     n_index=get_index_using_stack(df[neighborhood])
     index.append(n_index)
 print "Time to solution: ",time.clock() - start_time, "seconds"
-
-

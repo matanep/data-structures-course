@@ -1,13 +1,13 @@
 
 ### question 3 ###
 
-#Imports
+#Imports:
 import pandas as pd
 
-#Path for data
+#Path for data:
 path="data3.xlsx"
 
-#Implement HashTable class
+#Implement HashTable class:
 class HashTable:
     def __init__(self, size=int , hash_function_method=str, collision_handling=str,m=int,A=float,m_2=0,A_2=0.0):
         self.hash_function_method=hash_function_method
@@ -181,24 +181,26 @@ class HashTable:
             return False,counter
 
 
-#data handling data = pd.ExcelFile(path)
-data = pd.ExcelFile(path)
+#data handling:
+data = pd.ExcelFile(path)   #Import 'Sheet1'.
 df_1 = data.parse("Sheet1")
 keys_1=df_1['ID'].tolist()
 data_1=df_1['Name'].tolist()
 
-df_2 = data.parse("Sheet2")
+df_2 = data.parse("Sheet2") #Import 'Sheet2'.
 keys_2=df_2['ID'].tolist()
 data_2=df_2['Name'].tolist()
 
-df_3 = data.parse("Sheet3")
+df_3 = data.parse("Sheet3") #Import 'Sheet3'.
 keys_3=df_3['ID'].tolist()
 data_3=df_3['Name'].tolist()
 
-datas_and_keys=[(data_1,keys_1),(data_2,keys_2),(data_3,keys_3)]
+datas_and_keys=[(data_1,keys_1),(data_2,keys_2),(data_3,keys_3)] #List of namas for all data and kets list.
 
-for data,keys in datas_and_keys:
-    print "***"
+#Solve question 3:
+n=1
+for data,keys in datas_and_keys: #Go over each data set.
+    print "~~~~Data set",n,':~~~~'
     Hash_Table_1=HashTable(149,"mod","Chain",149,0,0,0)
     Hash_Table_2=HashTable(149,"mod","OA_Quadratic_Probing",149,0,0,0)
     Hash_Table_3=HashTable(149,"mod","OA_Double_Hashing",149,0,97,0)
@@ -209,11 +211,12 @@ for data,keys in datas_and_keys:
     for Hash_Table in Hash_Tables:
         count_in=0
         count_is=0
-        for i in range(len(keys_1)):
+        for i in range(len(keys)):
             moves=Hash_Table.insert(int(keys[i]),value=data[i])
             count_in+=moves
-        print count_in
+        print float(count_in)/len(keys)
+    n+=1
 
 
 
-#Todo: raiz error if inpuot parameters are not defined
+#Todo: raise error if input parameters are not defined
