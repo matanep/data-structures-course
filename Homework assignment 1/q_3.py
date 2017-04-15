@@ -206,7 +206,7 @@ for data,keys in datas_and_keys: #Go over each data set.
     Hash_Table_3=HashTable(149,"mod","OA_Double_Hashing",149,0,97,0)
     Hash_Table_4=HashTable(149,"multiplication","Chain",149,0.589,0,0)
     Hash_Table_5=HashTable(149,"multiplication","OA_Quadratic_Probing",149,0.589,0,0)
-    Hash_Table_6=HashTable(149,"multiplication","OA_Double_Hashing",149,0.589,97,0.309)
+    Hash_Table_6=HashTable(149,"multiplication","OA_Double_Hashing",149,0.589,97,0.405)
     Hash_Tables=[Hash_Table_1,Hash_Table_2,Hash_Table_3,Hash_Table_4,Hash_Table_5,Hash_Table_6]
     for Hash_Table in Hash_Tables:
         count_in=0
