@@ -2,27 +2,32 @@
 ### question 2 ###
 
 #Imports:
+import pandas as pd
+import time
 
 #Path for data:
-path="path to data"
+path="data2.xlsx"
 
 #Implement Stack class:
 class Stack:
-     def __init__(self,):
-         pass
+    def __init__(self, max_size):
+        self.max_size = max_size
+        self.items = []
 
-     def empty(self):
-         pass
+    def empty(self):
+        return self.items == []
 
-     def push(self, item):
-         pass
+    def push(self, item):
+        if len(self.items) < self.max_size:  # Check that the length of the stack is less than the 'maximum_size'.
+            self.items.append(item)
+        else:
+            return "Queue is full"
 
+    def pop(self):
+        return self.items.pop()
 
-     def pop(self):
-         pass
-
-     def top(self):
-         pass
+    def top(self):
+        return self.items[len(self.items) - 1]
 
 #Naive solution (o(n^2)):
 #Algorithm:
@@ -69,6 +74,7 @@ index=[]
 for neighborhood in neighborhoods:      #Go over every neighborhood and add solution to list
     n_index=naive_get_index(df[neighborhood])
     index.append(n_index)
+print 'Neighborhoods index is: ',index
 print "Time to solution: ",time.clock() - start_time, "seconds"
 
 #Solver using queue:
@@ -78,4 +84,5 @@ index=[]
 for neighborhood in neighborhoods:      #Go over every neighborhood and add solution to list
     n_index=get_index_using_stack(df[neighborhood])
     index.append(n_index)
+print 'Neighborhoods index is: ',index
 print "Time to solution: ",time.clock() - start_time, "seconds"
