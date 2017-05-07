@@ -2,32 +2,27 @@
 ### question 2 ###
 
 #Imports:
-import pandas as pd
-import time
 
 #Path for data:
-path="data2.xlsx"
+path="path to data"
 
 #Implement Stack class:
 class Stack:
-     def __init__(self,max_size):
-         self.max_size= max_size
-         self.items = []
+     def __init__(self,):
+         pass
 
      def empty(self):
-         return self.items == []
+         pass
 
      def push(self, item):
-        if len(self.items)<self.max_size: #Check that the length of the stack is less than the 'maximum_size'.
-            self.items.append(item)
-        else:
-            return "Queue is full"
+         pass
+
 
      def pop(self):
-         return self.items.pop()
+         pass
 
      def top(self):
-         return self.items[len(self.items)-1]
+         pass
 
 #Naive solution (o(n^2)):
 #Algorithm:
