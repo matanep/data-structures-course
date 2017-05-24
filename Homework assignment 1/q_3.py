@@ -30,6 +30,7 @@ class HashTable:
     def hash_function_2(self,key):
         if self.hash_function_method=="mod":
             return (self.m_2-key%self.m_2)
+            # return (1+key%self.m_2)
         elif self.hash_function_method=="multiplication":
             return int(self.m_2*(key*self.A_2-int(key*self.A_2)))
 
@@ -84,7 +85,10 @@ class HashTable:
             counter+=1
             for i in range(1,self.size):
                 counter+=1
-                new_place=self.hash_function(key+i*self.hash_function_2(key))
+                new_place=(self.hash_function(key) +i*self.hash_function_2(key))%self.m
+                if key==1940:
+                    print i
+                    print new_place
                 if self.keys[new_place] == [key]:
                     self.data[new_place] = [value]
                     return counter
@@ -93,6 +97,7 @@ class HashTable:
                     self.data[new_place]=[value]
                     self.num_keys+=1
                     return counter
+            print key
 
     def delete(self,key=int):
         counter = 0
@@ -206,7 +211,7 @@ for data,keys in datas_and_keys: #Go over each data set.
     Hash_Table_3=HashTable(149,"mod","OA_Double_Hashing",149,0,97,0)
     Hash_Table_4=HashTable(149,"multiplication","Chain",149,0.589,0,0)
     Hash_Table_5=HashTable(149,"multiplication","OA_Quadratic_Probing",149,0.589,0,0)
-    Hash_Table_6=HashTable(149,"multiplication","OA_Double_Hashing",149,0.589,97,0.309)
+    Hash_Table_6=HashTable(149,"multiplication","OA_Double_Hashing",149,0.589,97,0.405)
     Hash_Tables=[Hash_Table_1,Hash_Table_2,Hash_Table_3,Hash_Table_4,Hash_Table_5,Hash_Table_6]
     for Hash_Table in Hash_Tables:
         count_in=0
@@ -216,6 +221,7 @@ for data,keys in datas_and_keys: #Go over each data set.
             count_in+=moves
         print float(count_in)/len(keys)
     n+=1
+
 
 
 
