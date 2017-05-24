@@ -32,7 +32,7 @@ def min_coins(k):
 
 
     global MC
-    MC =[[-1 for m in range (k+1)] for n in range (len(items)+1)]
+    MC =[-1 for m in range (k+1)]
     print MC
     j = k
     return bestvalue(k,MC)
@@ -41,17 +41,13 @@ def bestvalue(k,MC):
     # Return the value of the most valuable subsequence of the first i
     # elements in items whose weights sum to no more than j.
     #@memoized
-        if MC[i][j]==-1:
-            value, weight = items[i - 1]
-            if i == 0:
-                NS[i][j] =0
-            else:
-                if weight > j:
-                    NS[i][j]=bestvalue(i - 1, j,NS)
-                else:
-                    NS[i][j]= max(bestvalue(i - 1, j,NS),
-                       bestvalue(i - 1, j - weight,NS) + value)
-        return NS[i][j]
+    if i <0:
+        MC[i]
+        MC[i]= min(bestvalue(i - 1,MC)+1,
+                   bestvalue(i - 10, MC) + 1,
+                   bestvalue(i - 25, MC) + 1,
+                   bestvalue(i - 50, MC) + 1)
+        return MC[i]
 
 
 
