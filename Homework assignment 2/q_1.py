@@ -1,104 +1,87 @@
 import numpy as np
 
-# #one way:
-# def min_coins(k):
+# #solution using memoization:
+# def min_coins(k,v_1,v_2,v_3,v_4):
 #     global MC
-#     MC =[-1 for m in range (k+1)]
-#     print MC
-#     return bestvalue(k,MC)
+#     MC =[-1 for m in range (k)]
+#     return bestvalue(k,MC,v_1,v_2,v_3,v_4)
 #
-# def bestvalue(i,MC):
-#     # Return the value of the most valuable subsequence of the first i
-#     # elements in items whose weights sum to no more than j.
-#     #@memoized
+# def bestvalue(i,MC,v_1,v_2,v_3,v_4):
+#
 #     if i <0:
 #         return np.inf
 #     if i==0:
 #         return 0
 #     else:
-#         if MC[i]==-1:
-#             MC[i]= min(bestvalue(i - 2,MC)+1,
-#                        bestvalue(i - 10, MC) + 1,
-#                        bestvalue(i - 25, MC) + 1,
-#                        bestvalue(i - 50, MC) + 1)
-#             print MC
-#         return MC[i]
+#         if MC[i-1]==-1:
+#             MC[i-1]= min(bestvalue(i - v_1,MC,v_1,v_2,v_3,v_4)+1,
+#                        bestvalue(i - v_2,MC,v_1,v_2,v_3,v_4)+1,
+#                        bestvalue(i - v_3,MC,v_1,v_2,v_3,v_4)+1,
+#                        bestvalue(i - v_4,MC,v_1,v_2,v_3,v_4)+1)
+#         return MC[i-1]
+# v_1=2
+# v_2=10
+# v_3=25
+# v_4=50
 #
 # k=82
-# min_coins=min_coins(k)
+# min_coins=min_coins(k,v_1,v_2,v_3,v_4)
 # print MC
 # print min_coins
 
 
 
-
-# and the other:
-def min_coins(k):
-    # global K
-    # K = k
-
-    global MC
-    MC =[-1 for m in range (k+1)]
-    print MC
-
-    return bestvalue(k,MC)
-
-def bestvalue(k,MC):
-    # Return the value of the most valuable subsequence of the first i
-    # elements in items whose weights sum to no more than j.
-    #@memoized
-    # if i >K:
-    #     return np.inf
-    # if i==K:
-    #     return 0
-    for i in range(len(MC)):
-        MC[i]= min(bestvalue(i - 2,MC)+1,
-                   bestvalue(i - 10, MC) + 1,
-                   bestvalue(i - 25, MC) + 1,
-                   bestvalue(i - 50, MC) + 1)
-        print MC
-        return MC[i]
-
-
-k=30
-min_coins=min_coins(k)
-print MC
-print min_coins
-
-
-# # new try:
-# def min_coins(k):
+#solution using bottom-up :
+# def min_coins(k,v_1,v_2,v_3,v_4):
+#     # global K
+#     # K = k
+#
 #     global MC
-#     MC = np.full((k + 1, k + 1, k + 1, k + 1), -1)
-#     # print MC
-#     return bestvalue(k,k,k,k, MC)
+#     MC =[-1 for m in range (k+1)]
+#     return bestvalue(k,MC,v_1,v_2,v_3,v_4)
 #
-# def bestvalue(i,j,l,m,MC):
-#     # Return the value of the most valuable subsequence of the first i
-#     # elements in items whose weights sum to no more than j.
-#     #@memoized
-#     if i<0 or j<0 or l<0 or m<0:
-#         return np.inf
+# def bestvalue(k,MC,v_1,v_2,v_3,v_4):
+#     fun = (lambda x: np.inf if x < 0 else 0 if x==0 else MC[x])
 #
-#     if  4*k - (i+j+l+m)>k:
-#         return np.inf
+#     for i in range(len(MC)):
 #
-#     if  4*k - (i+j+l+m)==k:
-#         print "here"
-#         return 0
+#         MC[i]=min(fun(i - v_1)+1,
+#                    fun(i - v_2)+1,
+#                     fun(i - v_3)+1,
+#                    fun(i - v_4)+1)
 #
-#     else:
-#         print i, j, l, m
-#         if MC[i,j,l,m]==-1:
-#             MC[i,j,l,m]= min(bestvalue(i - 1,j,l,m,MC)+1,
-#                        bestvalue(i,j - 10,l,m, MC) + 1,
-#                        bestvalue(i,j,l - 25,m, MC) + 1,
-#                        bestvalue(i,j,l,m - 50, MC) + 1)
-#             # print MC
-#         print i,j,l,m
-#         return MC[i,j,l,m]
+#     return MC[k]
 #
-# k=12
-# min_coins=min_coins(k)
-# # print MC
+#
+# v_1=2
+# v_2=10
+# v_3=25
+# v_4=50
+# k=30
+# min_coins=min_coins(k,v_1,v_2,v_3,v_4)
+# print MC
 # print min_coins
+
+
+def greedy_solution(k,v_1,v_2,v_3,v_4):
+    valus=[v_1,v_2,v_3,v_4]
+    sorted_index=sorted(range(len(valus)), key=lambda k: valus[k],reverse=True)
+    sum_coins=0
+    number_of_coins=[0 for i in range(4)]
+    for i in sorted_index:
+        while sum_coins+valus[i] <= k:
+            sum_coins += valus[i]
+            number_of_coins[i]+=1
+
+    if sum_coins==k:
+        return sum(number_of_coins),number_of_coins
+    else:
+        return "Greedy Solution dos not work"
+
+v_1=1
+v_2=10
+v_3=25
+v_4=50
+k=30
+min_coins=greedy_solution(k,v_1,v_2,v_3,v_4)
+print min_coins

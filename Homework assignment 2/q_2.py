@@ -43,7 +43,19 @@ print creat_adjacency_dict(edges)
 
 #part c
 
+def BFS(edges=list,v=int):
+    number_of_vertices = max(max(edges))
+    visited=[False for i in range(number_of_vertices)]
+    print(v)
+    visited[v]= True
+    ENQUEUE(v,Q)
+    while (not EMPTY(Q)):
+        x  DEQUEUE(Q)
+        for every neighbor y of x  {
+                     if (not visited [y])  {
+                           print(y)
+                           visited[y]  TRUE
+                           ENQUEUE(y,Q)
+
 
 #part d
-
-#part e

@@ -36,7 +36,7 @@ def naive_get_index(reports=[]):    #For each week check all the weeks prior to 
     for week in range(1,len(reports)):  #Go over each week.
         curr_index=0
         for week_step in reversed(range(week)): #Go over each week prior to the week you check this time.
-            if reports[week] > reports[week_step]:
+            if reports[week] >= reports[week_step]:
                 curr_index+=1                   #If the number of reportes in this week is greater than the number of reportes
             else:                               #in the week we check now, add one to the current index and check the week before
                 break                           #else, end the for loop and add the current index to the index list.
@@ -51,7 +51,7 @@ def get_index_using_stack(reports=[]):
     stack=Stack(1000)                               #Configure stack.
     stack.push(0)                                   #Pust to stack the first week.
     for week in range(1,len(reports)):              #Go over every week.
-        while stack.empty()==False and reports[week] > reports[stack.top()]:    #As long as the reports in the current week is greater than the number of
+        while stack.empty()==False and reports[week] >= reports[stack.top()]:    #As long as the reports in the current week is greater than the number of
             stack.pop()                                                         #reports in the top of the stack, pop the last week from the stack.
         if stack.empty():
             index.append(week)                                                  #If the stack is empty, append the current week to the index list.
@@ -64,7 +64,8 @@ def get_index_using_stack(reports=[]):
 data = pd.ExcelFile(path)
 df = data.parse("Sheet1")
 neighborhoods=list(df)[1:] #Crate the list of neighborhoods in the data.
-
+if len(neighborhoods[0])==0: #Handling no data.
+    raise ValueError('No data')
 
 
 #Solving with Naive algorithm:

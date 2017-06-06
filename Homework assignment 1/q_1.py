@@ -66,6 +66,8 @@ data = pd.ExcelFile(path)
 df = data.parse("Sheet1")
 revenue=df['revenue'].tolist()  #list of the revenues.
 cost=df['cost'].tolist()        #list of the costs.
+if len(cost)==0:                #Handling no data.
+    raise ValueError('No data')
 
 #Solving with Naive algorithm:
 start_time = time.clock()
