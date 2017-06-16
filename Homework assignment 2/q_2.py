@@ -12,20 +12,6 @@ data = pd.ExcelFile(path)
 df = data.parse("Sheet1")
 edges=[tuple(x) for x in df.to_records(index=False)]
 
-
-# for i in edges:
-#     edges.remove((i[1],i[0]))
-#
-#
-# # print len(edges)
-# df=pd.DataFrame.from_records(edges)
-#
-# # print df
-# #
-# writer = pd.ExcelWriter('edges.xlsx')
-# df.to_excel(writer,'Sheet2')
-# writer.save()
-
 #part a
 def creat_adjacency_matrix(edges=list):
     number_of_vertices = max(max(edges))
@@ -93,6 +79,27 @@ def BFS(edges=list,v=int):
                 visited[neighbor-1]=True
                 queue.enqueue(neighbor)
 
-print BFS(edges,1)
+# print BFS(edges,1)
 
 #part d
+
+def DFS(edges=list):
+    number_of_vertices = max(max(edges))
+    global color
+    color=['white' for i in range(number_of_vertices)]
+
+    global adjacency_dict
+    adjacency_dict=creat_adjacency_dict(edges)
+
+    for vertex in range(len(color)):
+        if color[vertex]== 'white':
+            VISIT(vertex)
+
+def VISIT(u):
+    color[u]= 'gray'
+    print(u+1)
+    neighbors_of_u = adjacency_dict[u+1]
+    for neighbor in neighbors_of_u:
+        if color[neighbor-1]=='white':
+            VISIT(neighbor-1)
+        color[u]= 'Black'
